@@ -1,0 +1,35 @@
+/* .rowContentAlignment {
+    justify-content: space-around;
+    align-items: center;
+} */
+* {
+    /* border: 0px; */
+}
+.headerRow {
+    background-color: rgb(0, 0, 121);
+}
+.leftPanelButtonDesign {
+    border: 0px;
+    border-radius: 3px;
+}
+
+h1 {
+    color: white;
+    font-size: 40px;
+}
+
+.lineSeparator {
+    height: 15px;
+    border: 0px solid gray;
+    /* border-bottom: 1px; */
+    margin: 2px;
+}
+#beforeHistoricalSearchList {
+    border-bottom: 2px solid gray ;
+    margin-bottom: 15px;
+}
+
+#searchField {
+    height: 40px;
+    border: 1px solid gray;
+}

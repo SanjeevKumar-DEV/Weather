@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./Assets/CSS/style.css">
+    <title>Weather</title>
+</head>
+
+<body>
+    <header class="container">
+        <div class="row justify-content-xs-center justify-content-sm-center headerRow">
+            <h1 class="col-12 col-xs-auto col-sm-auto">Weather Dashboard</h1>
+        </div>
+    </header>
+    <main class="container">
+        <section class="row">
+            <section class="col-3">
+                <section class="row">
+                    <h2 class="col-12 leftPanelButtonDesign">Search for a City:</h2>
+                </section>
+                <section class="row lineSeparator"></section>
+                <section class="row">
+                    <input id="searchField" type="text" class="col-12 leftPanelButtonDesign" value="Melbourne">
+                </section>
+                <section class="row lineSeparator"></section>
+                <section class="row">
+                    <input type="button" class="col-12 leftPanelButtonDesign" value="Search" style="background-color:rgb(0, 136, 255)">
+                </section>
+                <section class="row">
+                <section id="beforeHistoricalSearchList" class="col-12 lineSeparator"></section>
+            </section>
+                <section class="row historicalSearches">
+                    <input type="button" class="col-12 leftPanelButtonDesign" value="Berlin">
+                </section>
+            </section>
+            <section class="col-9">Display Bar</section>
+        </section>
+    </main>
+    <footer class="container">
+        <section class="row justify-content-xs-center justify-content-sm-center">
+            <section class="col-12 col-xs-auto col-sm-auto">Designed by Sanjeev</section>
+        </section>
+    </footer>
+
+    <!-- Added link to the jQuery library -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+
+    <!-- Your JavaScript file -->
+    <script type="text/javascript" src="./Assets/JS/script.js"></script>
+</body>
+
+</html>
