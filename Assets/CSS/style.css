@@ -58,7 +58,7 @@ h2 {
 }
 
 #response {
-    border: 2px solid gray;
+    /* border: 2px solid gray; */
     margin: 10px;
     margin-left: 25px;
     border-radius: 3px;
@@ -71,7 +71,18 @@ h2 {
 }
 
 .currentWeatherContainer {
-    /* border: 2px solid gray; */
     margin: 5px;
     margin-top: 10px;
+}
+
+#currentWeatherContainer {
+    border: 2px solid gray;
+    margin: 5px;
+    margin-top: 5px;
+    border-radius: 3px;
+}
+
+#forecastWeatherContainer {
+    border: 2px;
+    margin: 5px;
 }

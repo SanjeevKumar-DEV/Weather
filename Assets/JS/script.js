@@ -23,7 +23,7 @@ var weatherRequestURL = parentRequestUrl + weatherRequestURI;
 
 // Request to get weather data for initial load for last searched city 
 
-function createAndRenderWeatherAppOnFirstLoad(event) {
+function createAndRenderWeatherApp(event) {
     console.log(cityLatLongRequestURL);
     var displayContent = $('#response');
     function getWeatherData() {
@@ -108,5 +108,13 @@ function displayWeatherDataInCurrentContainer(data, city) {
 
 // Create time scheduler on the fly at when initial page load finished. 
 $(document).ready(function (event) {
-    createAndRenderWeatherAppOnFirstLoad();
+    createAndRenderWeatherApp();
+});
+
+$('#search').on('click', function(event) {
+    event.preventDefault();
+    cityParamValue = $('#searchField').val();
+    cityLatLongRequestURL = parentRequestUrl + cityLatLongRequestURI + cityParamName + cityParamValue + paramSeparator + apiKeyParamName + apiKey;
+    weatherRequestURL = parentRequestUrl + weatherRequestURI;
+    createAndRenderWeatherApp();
 });
