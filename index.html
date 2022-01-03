@@ -28,16 +28,28 @@
                 </section>
                 <section class="row lineSeparator"></section>
                 <section class="row">
-                    <input type="button" class="col-12 leftPanelButtonDesign" value="Search" style="background-color:rgb(0, 136, 255)">
+                    <input type="button" class="col-12 leftPanelButtonDesign" value="Search"
+                        style="background-color:rgb(0, 136, 255)">
                 </section>
                 <section class="row">
-                <section id="beforeHistoricalSearchList" class="col-12 lineSeparator"></section>
-            </section>
+                    <section id="beforeHistoricalSearchList" class="col-12 lineSeparator"></section>
+                </section>
                 <section class="row historicalSearches">
                     <input type="button" class="col-12 leftPanelButtonDesign" value="Berlin">
                 </section>
             </section>
-            <section class="col-9">Display Bar</section>
+            <section id="response" class="col-9">
+                <section id="currentWeatherContainer" class="row">
+                    <section col-12>
+                        <div id="cityTimeWeather"><h2></h2></div>
+                        <div id="temp" >Temperature</div>
+                        <div id="wind">Wind</div>
+                        <div id="humidity">Humidity</div>
+                        <div id="uvIndex">UV Index</div>
+                    </section>
+                </section>
+                <section id="forecastWeatherContainer" class="row"></section>
+            </section>
         </section>
     </main>
     <footer class="container">
