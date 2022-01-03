@@ -15,7 +15,12 @@
 
 h1 {
     color: white;
-    font-size: 40px;
+    font-size: 35px;
+}
+
+h2 {
+    /* color: white; */
+    font-size: 28px;
 }
 
 .lineSeparator {
@@ -32,4 +37,41 @@ h1 {
 #searchField {
     height: 40px;
     border: 1px solid gray;
+}
+
+.uvIndexMinimal {
+    background-color: green;
+}
+.uvIndexLow {
+    background-color: rgb(255, 242, 0);
+}
+.uvIndexModerate {
+    background-color: orange;
+}
+
+.uvIndexHigh {
+    background-color: red;
+}
+
+.uvIndexVeryHigh {
+    background-color: rgb(171, 0, 171);
+}
+
+#response {
+    border: 2px solid gray;
+    margin: 10px;
+    margin-left: 25px;
+    border-radius: 3px;
+}
+
+#userInput {
+    /* border: 2px solid gray; */
+    margin: 10px;
+    margin-left: 25px;
+}
+
+.currentWeatherContainer {
+    /* border: 2px solid gray; */
+    margin: 5px;
+    margin-top: 10px;
 }
