@@ -5,9 +5,9 @@ var apiKey = 'fc7a00aa9baea8ce97290c366a750d22';
 var parentRequestUrl = 'https://api.openweathermap.org/data/2.5/';
 var cityLatLongRequestURI = 'weather?';
 var cityParamName = 'q=';
-var cityParamValue = 'Patna';
+var cityParamValue = 'Melbourne';
 
-var cityLatLongRequestURL = parentRequestUrl + cityLatLongRequestURI + cityParamName + cityParamValue + paramSeparator + apiKeyParamName + apiKey;
+var cityLatLongRequestURL = '';
 
 var cityResponseLat = '';
 var cityResponseLong = '';
@@ -19,13 +19,25 @@ var weatherRequestLongParamName = 'lon=';
 var weatherUnitsParamName = 'units=';
 var weatherUnitsParamValue = 'imperial';
 
-var weatherRequestURL = parentRequestUrl + weatherRequestURI;
+var weatherRequestURL = '';
+
+var historicalSearches = [];
+var firstTimeLoad = true;
+
+if (JSON.parse(localStorage.getItem('historicalSearches')) === null) {
+    localStorage.setItem('historicalSearches', JSON.stringify(historicalSearches));
+}
+else {
+    historicalSearches = JSON.parse(localStorage.getItem('historicalSearches'));
+    if (historicalSearches[0] !== null) {
+        cityParamValue = historicalSearches[0];
+    }
+}
 
 // Request to get weather data for initial load for last searched city 
 
 function createAndRenderWeatherApp(event) {
-    console.log(cityLatLongRequestURL);
-    var displayContent = $('#response');
+    cityLatLongRequestURL = parentRequestUrl + cityLatLongRequestURI + cityParamName + cityParamValue + paramSeparator + apiKeyParamName + apiKey;
     function getWeatherData() {
         var requestUrl = cityLatLongRequestURL;
         fetch(requestUrl)
@@ -36,7 +48,7 @@ function createAndRenderWeatherApp(event) {
                 console.log(data);
                 cityResponseLat = data.coord.lat;
                 cityResponseLong = data.coord.lon;
-                weatherRequestURL += weatherRequestLatParamName + cityResponseLat + paramSeparator + weatherRequestLongParamName + cityResponseLong + paramSeparator + weatherUnitsParamName + weatherUnitsParamValue + paramSeparator + apiKeyParamName + apiKey;
+                weatherRequestURL = parentRequestUrl + weatherRequestURI + weatherRequestLatParamName + cityResponseLat + paramSeparator + weatherRequestLongParamName + cityResponseLong + paramSeparator + weatherUnitsParamName + weatherUnitsParamValue + paramSeparator + apiKeyParamName + apiKey;
                 console.log(weatherRequestURL);
                 requestUrl = weatherRequestURL;
                 fetch(requestUrl).then(function (response) {
@@ -44,11 +56,19 @@ function createAndRenderWeatherApp(event) {
                 }).then(function (data) {
                     console.log(data);
                     displayWeatherDataInCurrentContainer(data, cityParamValue);
+                    if (!firstTimeLoad) {
+                        historicalSearches.unshift(cityParamValue);
+                        localStorage.setItem('historicalSearches', JSON.stringify(historicalSearches));
+                    }
+                    else {
+                        firstTimeLoad = false;
+                    }
                 });
             });
-
     };
     getWeatherData();
+    cityLatLongRequestURL = '';
+    weatherRequestURL = '';
 };
 
 // UV Index Classification 
@@ -111,10 +131,10 @@ $(document).ready(function (event) {
     createAndRenderWeatherApp();
 });
 
-$('#search').on('click', function(event) {
+$('#search').on('click', function (event) {
     event.preventDefault();
     cityParamValue = $('#searchField').val();
-    cityLatLongRequestURL = parentRequestUrl + cityLatLongRequestURI + cityParamName + cityParamValue + paramSeparator + apiKeyParamName + apiKey;
-    weatherRequestURL = parentRequestUrl + weatherRequestURI;
+    // cityLatLongRequestURL = parentRequestUrl + cityLatLongRequestURI + cityParamName + cityParamValue + paramSeparator + apiKeyParamName + apiKey;
+    // weatherRequestURL = parentRequestUrl + weatherRequestURI;
     createAndRenderWeatherApp();
 });
