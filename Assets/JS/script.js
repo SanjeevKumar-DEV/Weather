@@ -23,6 +23,7 @@ var weatherRequestURL = '';
 
 var historicalSearches = [];
 var firstTimeLoad = true;
+var historicalSearchesContainer = $('.historicalSearches');
 
 if (JSON.parse(localStorage.getItem('historicalSearches')) === null) {
     localStorage.setItem('historicalSearches', JSON.stringify(historicalSearches));
@@ -40,30 +41,41 @@ function createAndRenderWeatherApp(event) {
     cityLatLongRequestURL = parentRequestUrl + cityLatLongRequestURI + cityParamName + cityParamValue + paramSeparator + apiKeyParamName + apiKey;
     function getWeatherData() {
         var requestUrl = cityLatLongRequestURL;
+        var proceedAfterFirstCall = true;
         fetch(requestUrl)
             .then(function (response) {
-                return response.json();
+                if (response.status === 200) {
+                    return response.json();
+                }
+                else {
+                    proceedAfterFirstCall = false;
+                    return [];
+                }
             })
             .then(function (data) {
-                console.log(data);
-                cityResponseLat = data.coord.lat;
-                cityResponseLong = data.coord.lon;
-                weatherRequestURL = parentRequestUrl + weatherRequestURI + weatherRequestLatParamName + cityResponseLat + paramSeparator + weatherRequestLongParamName + cityResponseLong + paramSeparator + weatherUnitsParamName + weatherUnitsParamValue + paramSeparator + apiKeyParamName + apiKey;
-                console.log(weatherRequestURL);
-                requestUrl = weatherRequestURL;
-                fetch(requestUrl).then(function (response) {
-                    return response.json();
-                }).then(function (data) {
-                    console.log(data);
-                    displayWeatherDataInCurrentContainer(data, cityParamValue);
-                    if (!firstTimeLoad) {
-                        historicalSearches.unshift(cityParamValue);
-                        localStorage.setItem('historicalSearches', JSON.stringify(historicalSearches));
-                    }
-                    else {
-                        firstTimeLoad = false;
-                    }
-                });
+                if (proceedAfterFirstCall) {
+                    cityResponseLat = data.coord.lat;
+                    cityResponseLong = data.coord.lon;
+                    weatherRequestURL = parentRequestUrl + weatherRequestURI + weatherRequestLatParamName + cityResponseLat + paramSeparator + weatherRequestLongParamName + cityResponseLong + paramSeparator + weatherUnitsParamName + weatherUnitsParamValue + paramSeparator + apiKeyParamName + apiKey;
+                    requestUrl = weatherRequestURL;
+                    fetch(requestUrl).then(function (response) {
+                        return response.json();
+                    }).then(function (data) {
+                        displayWeatherDataInCurrentContainer(data, cityParamValue);
+                        if (!firstTimeLoad) {
+                            historicalSearches.unshift(cityParamValue);
+                            localStorage.setItem('historicalSearches', JSON.stringify(historicalSearches));
+                            addToSearchHistoryUI();
+                        }
+                        else {
+                            firstTimeLoad = false;
+                        }
+                    });
+                }
+                else {
+                    var errorText = 'Enter correct city name.';
+                    $('#searchField').val(errorText);
+                }
             });
     };
     getWeatherData();
@@ -73,6 +85,18 @@ function createAndRenderWeatherApp(event) {
 
 // UV Index Classification 
 
+function addToSearchHistoryUI() {
+    // historicalSearches
+    var newItemAddedInSearch = $('<input>');
+    newItemAddedInSearch.attr('value', cityParamValue);
+    newItemAddedInSearch.attr('type', 'button');
+    newItemAddedInSearch.attr('class', 'col-12 leftPanelButtonDesign');
+    var lineSeparator = $('<section>');
+    lineSeparator.attr('class', 'row lineSeparator');
+    historicalSearchesContainer.prepend(lineSeparator);
+    historicalSearchesContainer.prepend(newItemAddedInSearch);
+}
+// uvIndex lookup for severity
 var uvIndex = {
     minimal: { min: 0, max: 2.5 },
     low: { min: 2.5, max: 5.5 },
@@ -121,7 +145,6 @@ function displayWeatherDataInCurrentContainer(data, city) {
         uvIndexValueAndColour.attr('class', 'uvIndexVeryHigh');
     }
     uvIndexValueAndColour.text(uvIndexValue);
-    console.log(typeof (data.current.uvi));
 }
 
 
@@ -134,7 +157,5 @@ $(document).ready(function (event) {
 $('#search').on('click', function (event) {
     event.preventDefault();
     cityParamValue = $('#searchField').val();
-    // cityLatLongRequestURL = parentRequestUrl + cityLatLongRequestURI + cityParamName + cityParamValue + paramSeparator + apiKeyParamName + apiKey;
-    // weatherRequestURL = parentRequestUrl + weatherRequestURI;
     createAndRenderWeatherApp();
 });
