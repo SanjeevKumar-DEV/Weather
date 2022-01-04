@@ -29,9 +29,21 @@ if (JSON.parse(localStorage.getItem('historicalSearches')) === null) {
     localStorage.setItem('historicalSearches', JSON.stringify(historicalSearches));
 }
 else {
+    // Load historical searches from local storage on first load
     historicalSearches = JSON.parse(localStorage.getItem('historicalSearches'));
     if (historicalSearches[0] !== null) {
         cityParamValue = historicalSearches[0];
+        $('#searchField').val(cityParamValue);
+        for (var i = (historicalSearches.length - 1); i >= 0; i--) {
+            var newItemAddedInSearch = $('<input>');
+            newItemAddedInSearch.attr('value', historicalSearches[i]);
+            newItemAddedInSearch.attr('type', 'button');
+            newItemAddedInSearch.attr('class', 'col-12 leftPanelButtonDesign');
+            var lineSeparator = $('<section>');
+            lineSeparator.attr('class', 'row lineSeparator');
+            historicalSearchesContainer.prepend(lineSeparator);
+            historicalSearchesContainer.prepend(newItemAddedInSearch);
+        }
     }
 }
 
