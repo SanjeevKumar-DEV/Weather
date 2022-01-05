@@ -38,7 +38,8 @@ else {
             var newItemAddedInSearch = $('<input>');
             newItemAddedInSearch.attr('value', historicalSearches[i]);
             newItemAddedInSearch.attr('type', 'button');
-            newItemAddedInSearch.attr('class', 'col-12 leftPanelButtonDesign');
+            newItemAddedInSearch.attr('class', 'col-12 leftPanelButtonDesign historicalSearchListerner');
+            newItemAddedInSearch.prop('disabled', false);
             var lineSeparator = $('<section>');
             lineSeparator.attr('class', 'row lineSeparator');
             historicalSearchesContainer.prepend(lineSeparator);
@@ -102,7 +103,8 @@ function addToSearchHistoryUI() {
     var newItemAddedInSearch = $('<input>');
     newItemAddedInSearch.attr('value', cityParamValue);
     newItemAddedInSearch.attr('type', 'button');
-    newItemAddedInSearch.attr('class', 'col-12 leftPanelButtonDesign');
+    newItemAddedInSearch.attr('class', 'col-12 leftPanelButtonDesign historicalSearchListerner');
+    newItemAddedInSearch.prop('disabled', false);
     var lineSeparator = $('<section>');
     lineSeparator.attr('class', 'row lineSeparator');
     historicalSearchesContainer.prepend(lineSeparator);
@@ -171,3 +173,13 @@ $('#search').on('click', function (event) {
     cityParamValue = $('#searchField').val();
     createAndRenderWeatherApp();
 });
+
+$(document).on('click', '.historicalSearchListerner',function (event) {
+    console.log(event.target.value);
+    var city = event.target.value;
+    event.preventDefault();
+    cityParamValue = city;
+    $('#searchField').val(city);
+    createAndRenderWeatherApp();
+});
+
