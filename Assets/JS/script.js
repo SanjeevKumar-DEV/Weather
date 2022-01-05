@@ -5,7 +5,7 @@ var apiKey = 'fc7a00aa9baea8ce97290c366a750d22';
 var parentRequestUrl = 'https://api.openweathermap.org/data/2.5/';
 var cityLatLongRequestURI = 'weather?';
 var cityParamName = 'q=';
-var cityParamValue = 'Melbourne';
+var cityParamValue = 'Sydney';
 
 var cityLatLongRequestURL = '';
 
@@ -28,10 +28,11 @@ var historicalSearchesContainer = $('.historicalSearches');
 if (JSON.parse(localStorage.getItem('historicalSearches')) === null) {
     localStorage.setItem('historicalSearches', JSON.stringify(historicalSearches));
 }
-else {
+else 
+{
     // Load historical searches from local storage on first load
     historicalSearches = JSON.parse(localStorage.getItem('historicalSearches'));
-    if (historicalSearches[0] !== null) {
+    if (historicalSearches[0] !== null & historicalSearches.length > 0) {
         cityParamValue = historicalSearches[0];
         $('#searchField').val(cityParamValue);
         for (var i = (historicalSearches.length - 1); i >= 0; i--) {
@@ -39,7 +40,7 @@ else {
             newItemAddedInSearch.attr('value', historicalSearches[i]);
             newItemAddedInSearch.attr('type', 'button');
             newItemAddedInSearch.attr('class', 'col-12 leftPanelButtonDesign historicalSearchListerner');
-            newItemAddedInSearch.prop('disabled', false);
+            // newItemAddedInSearch.prop('disabled', false);
             var lineSeparator = $('<section>');
             lineSeparator.attr('class', 'row lineSeparator');
             historicalSearchesContainer.prepend(lineSeparator);
@@ -75,10 +76,12 @@ function createAndRenderWeatherApp(event) {
                         return response.json();
                     }).then(function (data) {
                         displayWeatherDataInCurrentContainer(data, cityParamValue);
+                        displayForecastForNextFiveDays(data);
                         if (!firstTimeLoad) {
                             historicalSearches.unshift(cityParamValue);
                             localStorage.setItem('historicalSearches', JSON.stringify(historicalSearches));
                             addToSearchHistoryUI();
+                            console.log(data);
                         }
                         else {
                             firstTimeLoad = false;
@@ -86,7 +89,7 @@ function createAndRenderWeatherApp(event) {
                     });
                 }
                 else {
-                    var errorText = 'Enter correct city name.';
+                    var errorText = 'Enter correct city.';
                     $('#searchField').val(errorText);
                 }
             });
@@ -104,7 +107,7 @@ function addToSearchHistoryUI() {
     newItemAddedInSearch.attr('value', cityParamValue);
     newItemAddedInSearch.attr('type', 'button');
     newItemAddedInSearch.attr('class', 'col-12 leftPanelButtonDesign historicalSearchListerner');
-    newItemAddedInSearch.prop('disabled', false);
+    // newItemAddedInSearch.prop('disabled', false);
     var lineSeparator = $('<section>');
     lineSeparator.attr('class', 'row lineSeparator');
     historicalSearchesContainer.prepend(lineSeparator);
@@ -123,12 +126,13 @@ var uvIndex = {
 
 function displayWeatherDataInCurrentContainer(data, city) {
     city = city.charAt(0).toUpperCase() + city.slice(1);
-    var todayDate = " \(" + moment().format('L') + "\) ";
+    // var todayDate = " \(" + moment().format('L') + "\) ";
+    var todayDate = new Date(data.current.dt * 1000);
     var imageIcon = $('<img>');
     var imageURL = 'http://openweathermap.org/img/w/' + data.current.weather[0].icon + ".png"
     imageIcon.attr('src', imageURL);
     var citNameAndWeather = $('#cityNameTimeWeather');
-    citNameAndWeather.text(city + todayDate);
+    citNameAndWeather.text(city + ' ' + todayDate.getDate() + '/' + (todayDate.getMonth() + 1) + '/' + todayDate.getFullYear());
     citNameAndWeather.append(imageIcon);
     var temp = 'Temp: ' + data.current.temp + '\xB0' + 'F';
     $('#temp').text(temp);
@@ -162,6 +166,43 @@ function displayWeatherDataInCurrentContainer(data, city) {
 }
 
 
+// Display forecast for 5 days in future 
+function displayForecastForNextFiveDays(data) {
+    $('#forecastDisplay').empty();
+    for (var i = 1; i <= 5; i++) {
+        var forecastWeatherCard = $('<div>');
+        forecastWeatherCard.attr('class', 'col-2 weatherCard');
+        forecastWeatherCard.attr('style', 'background-color: navy; color:white');
+
+        var date = new Date(data.daily[i].dt * 1000);
+        var forecastDate = $('<div>');
+        forecastDate.attr('id', 'forecastDate' + i);
+        forecastDate.text(date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear());
+        forecastWeatherCard.append(forecastDate);
+
+        var imageIcon = $('<img>');
+        var imageURL = 'http://openweathermap.org/img/w/' + data.daily[i].weather[0].icon + ".png"
+        imageIcon.attr('src', imageURL);
+        imageIcon.attr('id', 'forcastWeatherCondition' + i);
+        forecastWeatherCard.append(imageIcon);
+
+        var temp = 'Temp: ' + data.daily[i].temp.day + '\xB0' + 'F';
+        var forecastTemp = $('<div>');
+        forecastTemp.text(temp);
+        forecastWeatherCard.append(forecastTemp);
+
+        var wind = 'Wind: ' + data.daily[i].wind_speed + ' MPH';
+        var forecastWind = $('<div>');
+        forecastWind.text(wind);
+        forecastWeatherCard.append(forecastWind);
+
+        var humidity = 'Humidity: ' + data.daily[i].humidity + ' %'
+        var forecastHumidity = $('<div>');
+        forecastHumidity.text(humidity);
+        forecastWeatherCard.append(forecastHumidity);
+        $('#forecastDisplay').append(forecastWeatherCard);
+    }
+}
 
 // Create time scheduler on the fly at when initial page load finished. 
 $(document).ready(function (event) {
@@ -174,7 +215,7 @@ $('#search').on('click', function (event) {
     createAndRenderWeatherApp();
 });
 
-$(document).on('click', '.historicalSearchListerner',function (event) {
+$(document).on('click', '.historicalSearchListerner', function (event) {
     console.log(event.target.value);
     var city = event.target.value;
     event.preventDefault();

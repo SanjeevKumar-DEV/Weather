@@ -18,13 +18,13 @@
     </header>
     <main class="container">
         <section class="row">
-            <section id="userInput" class="col-3">
+            <section id="userInput" class="col-2">
                 <section class="row">
                     <h2 class="col-12 leftPanelButtonDesign">Search for a City:</h2>
                 </section>
                 <section class="row lineSeparator"></section>
                 <section class="row">
-                    <input id="searchField" type="text" class="col-12 leftPanelButtonDesign" value="Melbourne">
+                    <input id="searchField" type="text" class="col-12 leftPanelButtonDesign" value="Sydney">
                 </section>
                 <section class="row lineSeparator"></section>
                 <section class="row">
@@ -35,30 +35,26 @@
                     <section id="beforeHistoricalSearchList" class="col-12 lineSeparator"></section>
                 </section>
                 <section class="row historicalSearches">
-                    <!-- <input type="button" class="col-12 leftPanelButtonDesign" value="Berlin"> -->
                 </section>
             </section>
-            <section id="response" class="col-8">
+            <section id="response" class="col-9">
                 <section id="currentWeatherContainer" class="row">
                     <section col-12>
-                        <div id="cityTimeWeather" class="currentWeatherContainer">
-                            <h2 id="cityNameTimeWeather"></h2>
+                        <div class="row">
+                            <div id="cityTimeWeather" class="currentWeatherContainer col-12">
+                                <h2 id="cityNameTimeWeather"></h2>
+                            </div>
+                            <div id="temp" class="currentWeatherContainer col-12">Temperature</div>
+                            <div id="wind" class="currentWeatherContainer col-12">Wind</div>
+                            <div id="humidity" class="currentWeatherContainer col-12">Humidity</div>
+                            <div id="uvIndex" class="currentWeatherContainer col-12"></div>
                         </div>
-                        <div id="temp" class="currentWeatherContainer">Temperature</div>
-                        <div id="wind" class="currentWeatherContainer">Wind</div>
-                        <div id="humidity" class="currentWeatherContainer">Humidity</div>
-                        <div id="uvIndex" class="currentWeatherContainer"></div>
                     </section>
                 </section>
                 <section id="forecastWeatherContainer" class="row">
                     <h5 class="col-12">5-Day Forecast</h5>
-                    <section class="col-12">
-                        <section class="row">
-                            <div id="day-1" class="col-2">Test1</div>
-                            <div id="day-2" class="col-2">Test2</div>
-                            <div id="day-3" class="col-2">Test3</div>
-                            <div id="day-4" class="col-2">Test4</div>
-                            <div id="day-5" class="col-2">Test5</div>
+                    <section class="col-12 forecast">
+                        <section id="forecastDisplay" class="row">
                         </section>
                     </section>
                 </section>
@@ -66,7 +62,7 @@
         </section>
     </main>
     <footer class="container">
-        <section class="row justify-content-xs-center justify-content-sm-center">
+        <section class="row justify-content-xs-center justify-content-sm-center" style="justify-content: space-around;">
             <section class="col-12 col-xs-auto col-sm-auto">Designed by Sanjeev</section>
         </section>
     </footer>
