@@ -28,8 +28,7 @@ var historicalSearchesContainer = $('.historicalSearches');
 if (JSON.parse(localStorage.getItem('historicalSearches')) === null) {
     localStorage.setItem('historicalSearches', JSON.stringify(historicalSearches));
 }
-else 
-{
+else {
     // Load historical searches from local storage on first load
     historicalSearches = JSON.parse(localStorage.getItem('historicalSearches'));
     if (historicalSearches[0] !== null & historicalSearches.length > 0) {
@@ -56,11 +55,14 @@ function createAndRenderWeatherApp(event) {
     function getWeatherData() {
         var requestUrl = cityLatLongRequestURL;
         var proceedAfterFirstCall = true;
+
         fetch(requestUrl)
             .then(function (response) {
+
                 if (response.status === 200) {
                     return response.json();
                 }
+
                 else {
                     proceedAfterFirstCall = false;
                     return [];
@@ -81,7 +83,6 @@ function createAndRenderWeatherApp(event) {
                             historicalSearches.unshift(cityParamValue);
                             localStorage.setItem('historicalSearches', JSON.stringify(historicalSearches));
                             addToSearchHistoryUI();
-                            console.log(data);
                         }
                         else {
                             firstTimeLoad = false;
@@ -216,7 +217,6 @@ $('#search').on('click', function (event) {
 });
 
 $(document).on('click', '.historicalSearchListerner', function (event) {
-    console.log(event.target.value);
     var city = event.target.value;
     event.preventDefault();
     cityParamValue = city;
